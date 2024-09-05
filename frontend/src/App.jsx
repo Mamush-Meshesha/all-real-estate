@@ -1,4 +1,5 @@
-import Home from "./pages/home"
+import Login from "./components/auth/login";
+import Header from "./components/header";
 
 
 function App() {
@@ -6,10 +7,11 @@ function App() {
   return (
     <>
       <div>
-       <Home />
-    </div>
+        <Header />
+        <Login />
+      </div>
     </>
-  )
+  );
 }
 
 export default App

@@ -1,5 +1,3 @@
-import Header from "../components/header";
-import { FiLink2 } from "react-icons/fi";
 import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { MdOutlineBathroom } from "react-icons/md";
@@ -10,11 +8,8 @@ import { GiMechanicGarage } from "react-icons/gi";
 const Home = () => {
   return (
     <div>
-      <Header />
       {/* center icon */}
-      <div className="md:pt-[24.3rem] pt-[14rem] flex justify-center ">
-        <FiLink2 className="text-7xl text-[#5483a3] rotate-[135deg] relative z-40 " />
-      </div>
+
       {/* top rated real estate */}
       <div>
         <div className="py-10">
@@ -489,13 +484,24 @@ const Home = () => {
         </div>
       </div>
       {/* footer */}
-      <div>
-        <div className="pt-10">
-          <div className="flex justify-center py-5 border-t-2">
-            <h1>&copy; 2024 all in one</h1>
+      <footer className="bg-gray-800 text-white py-6">
+        <div className="container mx-auto text-center">
+          <p className="text-sm mb-2">
+            © 2024 All In One. All rights reserved.
+          </p>
+          <div className="flex justify-center space-x-4">
+            <a href="/about" className="hover:underline">
+              About Us
+            </a>
+            <a href="/contact" className="hover:underline">
+              Contact
+            </a>
+            <a href="/privacy" className="hover:underline">
+              Privacy Policy
+            </a>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };

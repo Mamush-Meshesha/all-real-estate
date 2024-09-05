@@ -1,5 +1,20 @@
+import { useDispatch,useSelector } from 'react-redux'
+import { loginRequest } from '../../slice/userSlice';
 
 const Login = () => {
+  const {  email, password } = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const login = (e) => {
+     e.preventDefault();
+    dispatch(
+      loginRequest({
+        email,
+        password,
+      })
+    );
+
+}
+
   return (
     <div className="bg-[#f4f5fa]">
       <div className="md:grid grid-cols-[minmax(50%,1fr)_minmax(50%,1fr)]  h-screen">
@@ -24,9 +39,11 @@ const Login = () => {
                 <div className="">
                   <div className="pb-3">
                     <input
+                      value={email}
+                      onChange={e => e.target.value}
                       type="email"
-                      name=""
-                      id=""
+
+
                       placeholder="Email Addess"
                       className="h-11 px-3 border rounded-md w-full"
                     />
@@ -34,15 +51,17 @@ const Login = () => {
 
                   <div className="pb-3">
                     <input
+                      value={password}
+                      onChange={e => e.target.value}
                       type="password"
-                      name=""
-                      id=""
+  
+           
                       placeholder="Password"
                       className="h-11 px-3 border rounded-md w-full"
                     />
                   </div>
                   <div className="flex justify-center pb-10">
-                    <button className="h-11 border rounded-md hover:bg-[#3ea95c] hover:text-white px-3 ">
+                    <button onClick={login} className="h-11 border rounded-md hover:bg-[#3ea95c] hover:text-white px-3 ">
                       Login
                     </button>
                   </div>
