@@ -1,9 +1,44 @@
 import { useState } from "react";
 import { LuToggleLeft } from "react-icons/lu";
 import { LuToggleRight } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  registerRequest,
+  setAddress,
+  setConfirm_password,
+  setEmail,
+  setFull_name,
+  setPassword,
+  setPhone_number,
+} from "../../slice/userSlice";
+import { Link } from "react-router-dom";
 
-const Register = () => {
-    const [choose, setChoose] = useState("customer");
+const RegisterCom = () => {
+  const [choose, setChoose] = useState("customer");
+  const dispatch = useDispatch();
+  const {
+    email,
+    password,
+    full_name,
+    address,
+    phone_number,
+    comfirm_password,
+  } = useSelector((state) => state.user);
+
+  const register = (e) => {
+    e.preventDefault(
+      dispatch(
+        registerRequest({
+          email,
+          password,
+          full_name,
+          address,
+          phone_number,
+          comfirm_password,
+        })
+      )
+    );
+  };
   return (
     <div className="bg-[#f4f5fa]">
       <div className="md:grid grid-cols-[minmax(50%,1fr)_minmax(50%,1fr)]  h-screen">
@@ -43,28 +78,32 @@ const Register = () => {
                 <h1>Register</h1>
               </div>
 
-              <form>
+              <form onSubmit={register}>
                 <div className="">
                   <div className="pb-3">
                     <input
+                      value={full_name}
+                      onChange={(e) => dispatch(setFull_name(e.target.value))}
                       type="text"
-                      name="Full name"
-                      id="Full name"
                       placeholder="Full Name"
                       className="h-11 px-3 border rounded-md w-full"
                     />
                   </div>
                   <div className="pb-3">
                     <input
+                      value={email}
+                      onChange={(e) => dispatch(setEmail(e.target.value))}
                       type="email"
-                      name=""
-                      id=""
                       placeholder="Email Addess"
                       className="h-11 px-3 border rounded-md w-full"
                     />
                   </div>
                   <div className="pb-3">
                     <input
+                      value={phone_number}
+                      onChange={(e) =>
+                        dispatch(setPhone_number(e.target.value))
+                      }
                       type="tel"
                       placeholder="Phone number"
                       className="h-11 px-3 border rounded-md w-full"
@@ -74,17 +113,19 @@ const Register = () => {
                   <div className="pb-3">
                     <input
                       type="password"
-                      name=""
-                      id=""
+                      value={password}
+                      onChange={(e) => dispatch(setPassword(e.target.value))}
                       placeholder="Password"
                       className="h-11 px-3 border rounded-md w-full"
                     />
                   </div>
                   <div className="pb-3">
                     <input
+                      value={password}
+                      onChange={(e) =>
+                        dispatch(setConfirm_password(e.target.value))
+                      }
                       type="password"
-                      name=""
-                      id=""
                       placeholder="Confirm password"
                       className="h-11 px-3 border rounded-md w-full"
                     />
@@ -92,6 +133,8 @@ const Register = () => {
                   {choose === "customer" ? (
                     <div className="pb-3">
                       <input
+                        value={address}
+                        onChange={(e) => dispatch(setAddress(e.target.value))}
                         type="text"
                         placeholder="Preferred location"
                         className="h-11 px-3 border rounded-md w-full"
@@ -101,6 +144,8 @@ const Register = () => {
                     <div>
                       <div className="pb-3">
                         <input
+                          value={address}
+                          onChange={(e) => dispatch(setAddress(e.target.value))}
                           type="text"
                           placeholder="Real-Estate Address"
                           className="h-11 px-3 border rounded-md w-full"
@@ -108,6 +153,8 @@ const Register = () => {
                       </div>
                       <div className="pb-3">
                         <input
+                          value={address}
+                          onChange={(e) => dispatch(setAddress(e.target.value))}
                           type="text"
                           placeholder="Real-Estate Name"
                           className="h-11 px-3 border rounded-md w-full"
@@ -117,12 +164,21 @@ const Register = () => {
                   )}
 
                   <div className="flex justify-center pb-10">
-                    <button className="h-11 border rounded-md hover:bg-[#3ea95c] hover:text-white px-3 ">
+                    <button
+                      type="submit"
+                      className="h-11 border rounded-md hover:bg-[#3ea95c] hover:text-white px-3 "
+                    >
                       Register
                     </button>
                   </div>
                 </div>
               </form>
+            </div>
+            <div className="flex gap-3">
+              <p>Already have an account?</p>
+              <Link to="/login">
+                <p className="text-[#3ea95c]">Register</p>
+              </Link>
             </div>
           </div>
         </div>
@@ -131,4 +187,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterCom;

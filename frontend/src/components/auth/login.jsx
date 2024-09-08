@@ -1,8 +1,9 @@
-import { useDispatch,useSelector } from 'react-redux'
-import { loginRequest } from '../../slice/userSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { loginRequest,setEmail,setPassword } from '../../slice/userSlice';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
-  const {  email, password } = useSelector(state => state.user)
+const LoginCom = () => {
+ const {email,password} = useSelector(state => state.user)
   const dispatch = useDispatch()
   const login = (e) => {
      e.preventDefault();
@@ -35,15 +36,13 @@ const Login = () => {
                 <h1 className="capitalize">Login in to your account</h1>
               </div>
 
-              <form>
+              <form onSubmit={login}>
                 <div className="">
                   <div className="pb-3">
                     <input
                       value={email}
-                      onChange={e => e.target.value}
+                      onChange={(e) => dispatch(setEmail(e.target.value))}
                       type="email"
-
-
                       placeholder="Email Addess"
                       className="h-11 px-3 border rounded-md w-full"
                     />
@@ -52,21 +51,28 @@ const Login = () => {
                   <div className="pb-3">
                     <input
                       value={password}
-                      onChange={e => e.target.value}
+                      onChange={(e) => dispatch(setPassword(e.target.value))}
                       type="password"
-  
-           
                       placeholder="Password"
                       className="h-11 px-3 border rounded-md w-full"
                     />
                   </div>
                   <div className="flex justify-center pb-10">
-                    <button onClick={login} className="h-11 border rounded-md hover:bg-[#3ea95c] hover:text-white px-3 ">
+                    <button
+                      type="submit"
+                      className="h-11 border rounded-md hover:bg-[#3ea95c] hover:text-white px-3 "
+                    >
                       Login
                     </button>
                   </div>
                 </div>
               </form>
+              <div className='flex gap-3'>
+                <p>don&apos;t have an account?</p>
+                <Link to="/register">
+                  <p className="text-[#3ea95c]">Register</p>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -75,4 +81,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginCom;
