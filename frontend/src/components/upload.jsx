@@ -1,35 +1,43 @@
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImageRequest } from "../slice/homeSlice";
+import {  uploadImageRequest } from "../slice/homeSlice"; 
+import { useState } from "react";
 
 const ImageUpload = () => {
-    const { image } = useSelector(state => state.property)
-    const dispatch =  useDispatch()
-  // Handle image selection
+  const [images, setImages] = useState([]);
+  const { image, loading } = useSelector((state) => state.property); 
+  const dispatch = useDispatch();
+
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map((file) => ({
       url: URL.createObjectURL(file),
       file,
     }));
-   dispatch( uploadImageRequest((prevImages) => [...prevImages, ...newImages]))
+
+    setImages((prevImages) => [...prevImages, ...newImages]);
+console.log(files)
+    files.forEach((file) => {
+      const formData = new FormData();
+      formData.append("image", file);
+      dispatch(uploadImageRequest(formData)); 
+    });
   };
 
-  // Handle image deletion
+
   const handleImageDelete = (index) => {
-    const newImages = image.filter((_, i) => i !== index);
-   dispatch( uploadImageRequest(newImages))
+    const newImages = images.filter((_, i) => i !== index);
+    setImages(newImages);
   };
 
   return (
     <div className="p-10">
-    
-
       <div className="grid grid-cols-1 md:grid-cols-2 border">
         {/* Upload Input */}
         <div className="flex items-center justify-center">
           <label className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-all duration-300">
-            Select Images
+            {loading ? "Uploading..." : "Select Images"}
             <input
               type="file"
               multiple
@@ -41,9 +49,9 @@ const ImageUpload = () => {
         </div>
 
         {/* Image Preview Section */}
-        {image?.length > 0 && (
+        {images?.length > 0 && (
           <div className="py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {image.map((image, index) => (
+            {images.map((image, index) => (
               <div
                 key={index}
                 className="relative h-[200px] w-[200px] border-2 border-dashed p-2 group rounded-lg overflow-hidden shadow-lg"

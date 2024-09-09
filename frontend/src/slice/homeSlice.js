@@ -4,7 +4,8 @@ const initialState = {
     image: null,
     loading: false,
     error: null,
-    house: []
+    house: [],
+    createProperty: null
 }
 
 export const propertySlice = createSlice({
@@ -35,10 +36,21 @@ export const propertySlice = createSlice({
         fetchPropertyFailure: (state, action) => {
             state.loading = false,
                 state.error = action.payload
+        },
+        createPropertyRequest: (state) => {
+            state.loading = true
+        },
+        createPropertySuccess: (state, action) => { 
+            state.loading = false,
+                state.createProperty = action.payload
+        },
+        createPropertyFailure: (state, action) => {
+            state.loading = false,
+                state.error = action.payload
         }
     }
 })
 
-export const { fetchPropertyFailure, fetchPropertyRequest, fetchPropertySuccess,uploadImageFailure,uploadImageRequest,uploadImageSuccess } = propertySlice.actions
+export const { fetchPropertyFailure, fetchPropertyRequest, fetchPropertySuccess,uploadImageFailure,uploadImageRequest,uploadImageSuccess,createPropertyFailure,createPropertyRequest,createPropertySuccess } = propertySlice.actions
 
 export default propertySlice.reducer

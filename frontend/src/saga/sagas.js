@@ -1,7 +1,8 @@
 import { put, call, takeLatest } from "redux-saga/effects";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { loginFailure, loginRequest, loginSuccess, registerFailure, registerRequest, registerSuccess } from "../slice/userSlice";
-import { fetchPropertyFailure, fetchPropertyRequest, fetchPropertySuccess, uploadImageFailure, uploadImageRequest } from "../slice/homeSlice";
+import { createPropertyFailure,  createPropertyRequest,  createPropertySuccess, fetchPropertyFailure, fetchPropertyRequest, fetchPropertySuccess, uploadImageFailure, uploadImageRequest, uploadImageSuccess } from "../slice/homeSlice";
 
 function* loginUser(action) {
     try {
@@ -15,6 +16,7 @@ function* loginUser(action) {
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       }
     );
     yield put(loginSuccess(response.data));
@@ -42,17 +44,33 @@ function* registerUser(action) {
 
 function* uploadImage(action) {
   try {
+    const token = Cookies.get("token")
     const res = yield call(axios.post, "http://localhost:3000/api/upload", action.payload, {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`, // Include the token here
+      },
+      withCredentials: true, // Ensure cookies are sent with request
     })
-    yield put(uploadImageRequest(res.data))
+    yield put(uploadImageSuccess(res.data))
   } catch (error) {
     yield put(uploadImageFailure(error))
   }
 }
-
+function* createProperty(action) {
+  try {
+    const res = yield call(axios.post, "http://localhost:3000/api/property", action.payload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true, 
+    }
+    )
+    yield put(createPropertySuccess(res.data))
+  } catch (error) {
+    yield put(createPropertyFailure(error.message))
+  }
+}
 function* fetchProperty() {
   try {
     const res = yield call(axios.get, "http://localhost:3000/api/property")
@@ -79,4 +97,14 @@ function* watchFetchProperty() {
   yield takeLatest(fetchPropertyRequest, fetchProperty)
 }
 
-export { watchLoginUser, watchRegisterUser, watchUploadImage, watchFetchProperty };
+function* watchCreateProperty() {
+  yield takeLatest(createPropertyRequest, createProperty)
+}
+
+export {
+  watchLoginUser,
+  watchRegisterUser,
+  watchUploadImage,
+  watchFetchProperty,
+  watchCreateProperty,
+};
