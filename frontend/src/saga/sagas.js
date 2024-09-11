@@ -59,9 +59,13 @@ function* uploadImage(action) {
 }
 function* createProperty(action) {
   try {
+        const token = Cookies.get("token");
+
     const res = yield call(axios.post, "http://localhost:3000/api/property", action.payload, {
       headers: {
         "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`, // Include the token here
+
       },
       withCredentials: true, 
     }
@@ -73,7 +77,7 @@ function* createProperty(action) {
 }
 function* fetchProperty() {
   try {
-    const res = yield call(axios.get, "http://localhost:3000/api/property")
+    const res = yield call(axios.get, "http://localhost:3000/api/prop")
     yield put(fetchPropertySuccess(res.data))
     console.log(res.data)
   } catch (error) {

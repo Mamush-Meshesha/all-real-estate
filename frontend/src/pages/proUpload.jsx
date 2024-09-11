@@ -1,7 +1,7 @@
 import Upload from "../components/upload"
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImageRequest } from "../slice/homeSlice";
+import { createPropertyRequest } from "../slice/homeSlice";
 const ProUPload = () => {
  const [formData, setFormData] = useState({
    name: "",
@@ -29,7 +29,7 @@ console.log(secureUrl);
    e.preventDefault();
 
    const payload = { ...formData, image: secureUrl };
-   dispatch(uploadImageRequest(payload));
+   dispatch(createPropertyRequest(payload));
  };
 
  

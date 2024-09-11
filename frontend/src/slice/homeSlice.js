@@ -5,7 +5,7 @@ const initialState = {
     loading: false,
     error: null,
     house: [],
-    createProperty: null
+    createProperty: []
 }
 
 export const propertySlice = createSlice({
