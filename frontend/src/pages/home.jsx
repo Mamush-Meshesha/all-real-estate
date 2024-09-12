@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { fetchPropertyRequest } from "../slice/homeSlice";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { house } = useSelector((state) => state.property);
@@ -220,9 +221,9 @@ const Home = () => {
             <h1 className="py-3 md:text-2xl lg:text-3xl">Explore</h1>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2  xl:grid-cols-4  ">
               {house && house.length > 0 ? (
-                house.map((pro, index) => (
-                  <div key={index}>
-                    <div className="h-[400px] flex-1 border rounded-md bg-white">
+                house.map((pro, _id) => (
+                  <div key={_id}>
+                    <Link to={`/detail/${_id}`} className="h-[400px] flex-1 border rounded-md bg-white">
                       <div className="p-4 h-full">
                         <img
                           src={pro.image}
@@ -268,7 +269,7 @@ const Home = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 ))
               ) : (

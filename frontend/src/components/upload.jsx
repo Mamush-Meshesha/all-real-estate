@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const ImageUpload = () => {
   const [images, setImages] = useState([]);
-  const { image, loading } = useSelector((state) => state.property); 
+  const { loading } = useSelector((state) => state.property); 
   const dispatch = useDispatch();
 
 
@@ -33,7 +33,7 @@ console.log(files)
 
   return (
     <div className="p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 border">
+      <div className="grid grid-cols-1 md:grid-cols-2 border min-h-[100px] max-h-[350px] rounded-lg ">
         {/* Upload Input */}
         <div className="flex items-center justify-center">
           <label className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-all duration-300">
@@ -54,13 +54,13 @@ console.log(files)
             {images.map((image, index) => (
               <div
                 key={index}
-                className="relative h-[200px] w-[200px] border-2 border-dashed p-2 group rounded-lg overflow-hidden shadow-lg"
+                className="relative h-[230px] w-[200px] border-2 border-dashed border-green-500  group rounded-lg overflow-hidden shadow-lg"
               >
                 {/* Image Preview */}
                 <img
                   src={image.url}
                   alt={`preview-${index}`}
-                  className="w-full h-56 object-cover rounded-lg"
+                  className="w-full h-[99%] object-cover rounded-lg p-2 "
                 />
 
                 {/* Delete Button */}

@@ -2,7 +2,7 @@ import { put, call, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { loginFailure, loginRequest, loginSuccess, registerFailure, registerRequest, registerSuccess } from "../slice/userSlice";
-import { createPropertyFailure,  createPropertyRequest,  createPropertySuccess, fetchPropertyFailure, fetchPropertyRequest, fetchPropertySuccess, uploadImageFailure, uploadImageRequest, uploadImageSuccess } from "../slice/homeSlice";
+import { createPropertyFailure,  createPropertyRequest,  createPropertySuccess, fetchPropertyDetailFailure, fetchPropertyDetailRequest, fetchPropertyDetailSuccess, fetchPropertyFailure, fetchPropertyRequest, fetchPropertySuccess, uploadImageFailure, uploadImageRequest, uploadImageSuccess } from "../slice/homeSlice";
 
 function* loginUser(action) {
     try {
@@ -85,6 +85,15 @@ function* fetchProperty() {
   }
 }
 
+function* fetchPropertyDetail() {
+  try {
+    const res = yield call(axios.get, "http://localhost:3000/api/prop")
+    yield put(fetchPropertyDetailSuccess(res.data))
+  } catch (error) {
+    yield put(fetchPropertyDetailFailure(error.message))
+  }
+}
+
 function* watchLoginUser() {
   yield takeLatest(loginRequest, loginUser); 
 }
@@ -105,10 +114,14 @@ function* watchCreateProperty() {
   yield takeLatest(createPropertyRequest, createProperty)
 }
 
+function* watchFetchPropertyDetail() {
+  yield takeLatest(fetchPropertyDetailRequest,fetchPropertyDetail)
+}
 export {
   watchLoginUser,
   watchRegisterUser,
   watchUploadImage,
   watchFetchProperty,
   watchCreateProperty,
+  watchFetchPropertyDetail
 };
