@@ -42,12 +42,32 @@ const property = async (req, res) => {
       image,
       garage,
       user: req.user._id,
-    })
+    });
 
-    res.status(201).json(newProperty)
+    res.status(201).json(newProperty);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
-export  {upload,property};
+const getProperty = async (req, res) => {
+  try {
+    const property = await Estate.find({});
+    res.status(200).json(property);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getdetail = async (req, res) => {
+  try {
+    const id = req.params.id
+    console.log(id)
+    const singleProperty = await Estate.findById(id)
+    res.status(200).json(singleProperty)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export { upload, property, getProperty,getdetail };
