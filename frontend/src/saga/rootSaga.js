@@ -1,14 +1,25 @@
-import { all } from "redux-saga/effects"; 
-import {watchCreateProperty, watchFetchProperty, watchFetchPropertyDetail, watchLoginUser,watchRegisterUser, watchUploadImage} from "./sagas";
+import { all } from "redux-saga/effects";
+import {
+  watchChapaPay,
+  watchCreateProperty,
+  watchFetchProperty,
+  watchFetchPropertyDetail,
+  watchLoginUser,
+  watchRegisterUser,
+  watchStripePay,
+  watchUploadImage,
+} from "./sagas";
 
 function* rootSaga() {
   yield all([
-      watchLoginUser(),
+    watchLoginUser(),
     watchRegisterUser(),
     watchFetchProperty(),
     watchUploadImage(),
     watchCreateProperty(),
-      watchFetchPropertyDetail()
+    watchFetchPropertyDetail(),
+    watchStripePay(),
+    watchChapaPay()
   ]);
 }
 

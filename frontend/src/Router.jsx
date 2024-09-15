@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         element: <ProUPload />,
       },
       {
-        path: "/detail/:id",
+        path: "/detail/:_id",
         element: <Detail />,
       },
       {

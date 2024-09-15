@@ -7,6 +7,11 @@ const initialState = {
   house: [],
   createProperty: [],
   detail: [],
+  paymentIntent: null,
+  succeeded: false,
+  amount: 0,
+  // chapa
+  chapaPay: null
 };
 
 export const propertySlice = createSlice({
@@ -54,6 +59,34 @@ export const propertySlice = createSlice({
     fetchPropertyDetailFailure: (state, action) => {
       (state.loading = false), (state.error = action.payload);
     },
+    stripeRequest: (state) => {
+      state.loading = true;
+    },
+    stripeSuccessfull: (state, action) => {
+      state.paymentIntent = action.payload; // Ensure this is set correctly
+      state.succeeded = true;
+      state.error = null;
+      state.loading = false;
+    },
+    stripeFailure: (state, action) => {
+      state.error = action.payload;
+      state.succeeded = false;
+      state.loading = false;
+    },
+    setAmount: (state, action) => {
+      state.amount = action.payload;
+    },
+    chapaPayRequest: (state) => {
+      state.loading = true
+    },
+    chapaPaySuccess: (state, action) => {
+      state.loading = false;
+      state.chapaPay = action.payload
+    },
+    chapaPayFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload
+    }
   },
 });
 
@@ -66,10 +99,17 @@ export const {
   uploadImageSuccess,
   createPropertyFailure,
   createPropertyRequest,
-    createPropertySuccess,
-    fetchPropertyDetailFailure,
-    fetchPropertyDetailRequest,
-  fetchPropertyDetailSuccess
+  createPropertySuccess,
+  fetchPropertyDetailFailure,
+  fetchPropertyDetailRequest,
+  fetchPropertyDetailSuccess,
+  stripeRequest,
+  stripeSuccessfull,
+  stripeFailure,
+  setAmount,
+  chapaPayFailure,
+  chapaPayRequest,
+  chapaPaySuccess
 } = propertySlice.actions;
 
 export default propertySlice.reducer;
