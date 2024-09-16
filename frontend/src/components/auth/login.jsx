@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { loginRequest,setEmail,setPassword } from '../../slice/userSlice';
 import { Link } from 'react-router-dom';
+ import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const LoginCom = () => {
- const {email,password} = useSelector(state => state.user)
+ const { email, password, isLoggedIn } = useSelector((state) => state.user);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const login = (e) => {
      e.preventDefault();
     dispatch(
@@ -14,7 +17,12 @@ const LoginCom = () => {
       })
     );
 
-}
+  }
+    useEffect(() => {
+      if (isLoggedIn) {
+        navigate("/"); // Navigate to the homepage after successful login
+      }
+    }, [isLoggedIn, navigate]);
 
   return (
     <div className="bg-[#f4f5fa]">

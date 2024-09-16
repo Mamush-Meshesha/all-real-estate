@@ -1,13 +1,9 @@
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { loadStripe } from "@stripe/stripe-js";
-import StripePay from "../components/stripe";
-import { Elements } from "@stripe/react-stripe-js";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import ChapaPay from "../components/chapa";
+import { useEffect, useState } from "react";
+import { setAmount, stripeRequest } from "../slice/homeSlice";
 
-const stripePromise = loadStripe(
-  "pk_live_51PyUz8IZdOaa1wBOsbezC0YN2BWFkLmA6zyrA27zsLAhgCesM42egohXpaoaQDcuNpEf1ILlYouuEee04LqiRFXG00OqsZJbwa"
-);
 
 const Detail = () => {
    const { _id } = useParams(); // This should be '_id' based on your route structure
@@ -16,7 +12,33 @@ const Detail = () => {
    const property = useSelector((state) =>
      state.property.house.find((prop) => prop._id === _id)
    );
-  const { paymentIntent } = useSelector((state) => state.property);
+  
+   const dispatch = useDispatch();
+   const { amount, loading } = useSelector(
+     (state) => state.property
+   );
+
+   const [inputAmount, setInputAmount] = useState("");
+
+   // Effect to fetch payment intent when amount is set
+   useEffect(() => {
+     
+       dispatch(stripeRequest()); // Trigger action to create payment intent
+     
+   }, [dispatch]);
+
+   const handleAmountChange = (e) => {
+     setInputAmount(e.target.value);
+   };
+
+   const handleSubmit = (event) => {
+     event.preventDefault();
+     if (inputAmount > 0) {
+       dispatch(setAmount(Number(inputAmount))); // Set amount and fetch payment intent
+     } else {
+       console.log("Invalid amount");
+     }
+   };
 
    if (!property) {
      return <h1>Property not found</h1>;
@@ -50,12 +72,22 @@ const Detail = () => {
             </div>
           </div>
           <div>
-        
-        <Elements
-          stripe={stripePromise}
-        >
-          <StripePay />
-        </Elements>
+            <div>
+             <form onSubmit={handleSubmit}>
+          <input
+            type="number"
+            placeholder="Enter amount"
+            value={inputAmount}
+            onChange={handleAmountChange}
+          />
+                  <Link to="/stripe">
+          <button type="submit" disabled={loading || !inputAmount}>
+            {loading ? "Processing..." : `Pay with Stripe $${inputAmount}`}
+          </button>
+                  </Link>
+        </form>
+            </div>
+
             <ChapaPay />
           </div>
         </div>

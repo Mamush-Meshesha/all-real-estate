@@ -1,11 +1,7 @@
-import {
-  CardElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import { stripeRequest, setAmount } from "../slice/homeSlice";
+import {  useEffect } from "react";
+import { stripeRequest } from "../slice/homeSlice";
 
 const StripePay = () => {
   const stripe = useStripe();
@@ -15,26 +11,14 @@ const StripePay = () => {
     (state) => state.property
   );
 
-  const [inputAmount, setInputAmount] = useState("");
 
+  // Effect to fetch payment intent when amount is set
   useEffect(() => {
-    if (amount) {
-      dispatch(stripeRequest(amount)); // Fetch payment intent when amount is set
+    if (amount && amount > 0) {
+      dispatch(stripeRequest(amount)); // Trigger action to create payment intent
     }
   }, [amount, dispatch]);
 
-  const handleAmountChange = (e) => {
-    setInputAmount(e.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (inputAmount > 0) {
-      dispatch(setAmount(Number(inputAmount))); // Trigger payment intent creation
-    } else {
-      console.log("Invalid amount");
-    }
-  };
 
   const handlePayment = async () => {
     if (!stripe || !elements || !paymentIntent) {
@@ -45,7 +29,7 @@ const StripePay = () => {
       await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:3000/your-return-url", // Replace with your return URL
+          return_url: "http://localhost:3000/stripe-confirm", // Replace with your return URL
         },
       });
 
@@ -58,19 +42,10 @@ const StripePay = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="number"
-          placeholder="Enter amount"
-          value={inputAmount}
-          onChange={handleAmountChange}
-        />
+     
         <CardElement />
-        <button type="submit" disabled={!stripe || loading || !inputAmount}>
-          {loading ? "Processing..." : `Pay $${inputAmount}`}
-        </button>
-      </form>
 
+      {/* Confirm payment button, only enabled when paymentIntent is ready */}
       {paymentIntent && !loading && (
         <button onClick={handlePayment} disabled={!stripe}>
           Confirm Payment

@@ -9,7 +9,8 @@ const initialState = {
   full_name: "",
   address: "",
   phone_number: "",
-  comfirm_password: ""
+  comfirm_password: "",
+  isLoggedIn: false
 
 };
 
@@ -24,6 +25,7 @@ export const userSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       (state.loading = false), (state.user = action.payload);
+      state.isLoggedIn = true
     },
     loginFailure: (state, action) => {
       state.loading = false;
